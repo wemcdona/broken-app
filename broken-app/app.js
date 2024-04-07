@@ -2,12 +2,14 @@ const express = require('express');
 let axios = require('axios');
 var app = express();
 
-app.post('/', aync (req, res, next) => {
+app.use(express.json());
+
+app.post('/', async (req, res, next) => {
   try {
     const usernames = req.body.developers;
 
     const promises = usernames.map(async username => {
-      const response = await axios.getAdapter(`https://api.github.com/users/${username}`);
+      const response = await axios.get(`https://api.github.com/users/${username}`);
       return { name: response.data.name, bio: response.data.bio };
     });
 
